@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de" class="dark">
+<html lang="de" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Symmetrische Verschlüsselung (Alice & Bob) - Erklärvideo & Lab</title>
+    <title>Symmetrische Verschlüsselung - Interaktives Lernvideo & Lab</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,12 +12,10 @@
             theme: {
                 extend: {
                     colors: {
-                        aliceBlue: '#3b82f6',
-                        bobGreen: '#10b981',
-                        eveRed: '#ef4444',
-                        keyYellow: '#f59e0b',
-                        darkBg: '#0b0f19',
-                        cardBg: '#111827'
+                        brandIndigo: '#4f46e5',
+                        brandCyan: '#0891b2',
+                        brandEmerald: '#059669',
+                        brandRose: '#e11d48'
                     }
                 }
             }
@@ -26,71 +24,57 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;800&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0b0f19;
-            color: #f8fafc;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
         }
-        
         .glass-panel {
-            background: rgba(17, 24, 39, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
-
-        /* Packet Animations */
-        @keyframes flyRight {
-            0% { left: 15%; opacity: 0; transform: scale(0.8); }
-            10% { opacity: 1; transform: scale(1); }
-            90% { opacity: 1; transform: scale(1); }
-            100% { left: 80%; opacity: 0; transform: scale(0.8); }
-        }
-        .animate-fly-packet {
-            animation: flyRight 4s infinite linear;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.08); }
-        }
-        .glow-effect {
-            animation: pulseGlow 3s infinite ease-in-out;
+        .glow-indigo {
+            box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.15);
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between bg-slate-950 text-slate-100 selection:bg-amber-500 selection:text-slate-950">
+<body class="min-h-screen flex flex-col justify-between bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white">
 
     <!-- Header -->
-    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-4 py-3">
+    <header class="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-50 px-4 py-3">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-tr from-amber-500 to-yellow-400 text-slate-950 p-2.5 rounded-xl font-bold shadow-lg shadow-amber-500/20">
+                <div class="bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white p-2.5 rounded-xl font-bold shadow-lg shadow-indigo-500/20">
                     <i class="fa-solid fa-key text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg leading-tight tracking-tight">Kryptographie-Kompakt</h1>
-                    <p class="text-xs text-amber-400 font-medium flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-amber-400 inline-block animate-ping"></span>
-                        Symmetrische Verschlüsselung (Alice, Bob &amp; Eve)
+                    <h1 class="font-extrabold text-lg leading-tight tracking-tight text-slate-900">Kryptographie-Kompakt</h1>
+                    <p class="text-xs text-indigo-600 font-medium flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500 inline-block animate-ping"></span>
+                        Symmetrische Verschlüsselung
                     </p>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button id="btnNavVideo" onclick="switchTab('video')" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 hover:opacity-90 transition flex items-center gap-2 shadow-lg shadow-amber-500/20">
+            <div class="flex flex-wrap gap-2">
+                <button id="btnNavVideo" onclick="switchTab('video')" class="px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white hover:opacity-90 transition flex items-center gap-2 shadow-lg shadow-indigo-500/20">
                     <i class="fa-solid fa-play"></i> Erklärvideo
                 </button>
-                <button id="btnNavLab" onclick="switchTab('lab')" class="px-4 py-2 text-sm font-semibold rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 transition flex items-center gap-2">
-                    <i class="fa-solid fa-flask"></i> Interactive Lab
+                <button id="btnNavLab" onclick="switchTab('lab')" class="px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200 transition flex items-center gap-2">
+                    <i class="fa-solid fa-flask"></i> Crypto-Lab
+                </button>
+                <button id="btnNavCalc" onclick="switchTab('calc')" class="px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200 transition flex items-center gap-2">
+                    <i class="fa-solid fa-calculator"></i> Schlüssel-Rechner
                 </button>
             </div>
         </div>
@@ -102,221 +86,188 @@
         <div id="sectionVideo" class="flex flex-col gap-4">
             
             <!-- Video Player Window -->
-            <div class="relative bg-slate-900 rounded-2xl border border-slate-800/80 shadow-2xl overflow-hidden aspect-video max-h-[640px] flex flex-col justify-between glass-panel">
+            <div class="relative bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden aspect-video max-h-[640px] flex flex-col justify-between glass-panel glow-indigo">
                 
-                <!-- Video Stage / Visual Canvas Area -->
-                <div id="videoStage" class="relative flex-grow flex items-center justify-center p-4 md:p-8 overflow-hidden select-none">
+                <!-- Video Stage -->
+                <div id="videoStage" class="relative flex-grow flex items-center justify-center p-6 overflow-hidden select-none">
                     
                     <!-- Ambient Glow Effects -->
-                    <div class="absolute -top-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                    <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -top-24 -left-24 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                    <!-- Characters Overlay (Always Visible Structure) -->
-                    <div class="absolute inset-x-4 md:inset-x-12 top-4 flex justify-between items-start pointer-events-none z-10">
-                        <!-- Alice -->
-                        <div class="flex flex-col items-center gap-1.5 bg-slate-950/70 p-2.5 md:p-3 rounded-2xl border border-blue-500/30 backdrop-blur">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/40 flex items-center justify-center text-xl shadow-lg">
-                                <i class="fa-solid fa-user-astronaut"></i>
-                            </div>
-                            <span class="text-xs font-bold text-blue-400">Alice</span>
-                            <span class="text-[10px] text-slate-400">Senderin</span>
+                    <!-- Scene 1: Grundprinzip -->
+                    <div id="scene1" class="scene-content text-center max-w-3xl flex flex-col items-center gap-6 transition-all duration-500">
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-indigo-100 text-indigo-700 border border-indigo-200">Lektion 1</span>
+                            <span class="text-xs text-slate-500">Das Grundprinzip</span>
                         </div>
-
-                        <!-- Eve (Eavesdropper in middle) -->
-                        <div id="eveContainer" class="flex flex-col items-center gap-1.5 bg-slate-950/70 p-2.5 md:p-3 rounded-2xl border border-rose-500/30 backdrop-blur transition-all duration-500">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/40 flex items-center justify-center text-xl shadow-lg">
-                                <i class="fa-solid fa-user-ninja"></i>
-                            </div>
-                            <span class="text-xs font-bold text-rose-400">Eve</span>
-                            <span id="eveLabel" class="text-[10px] text-slate-400">Lauschangreiferin</span>
-                        </div>
-
-                        <!-- Bob -->
-                        <div class="flex flex-col items-center gap-1.5 bg-slate-950/70 p-2.5 md:p-3 rounded-2xl border border-emerald-500/30 backdrop-blur">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-xl shadow-lg">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </div>
-                            <span class="text-xs font-bold text-emerald-400">Bob</span>
-                            <span class="text-[10px] text-slate-400">Empfänger</span>
-                        </div>
-                    </div>
-
-                    <!-- SCENE 1: Problem ohne Verschlüsselung -->
-                    <div id="scene1" class="scene-content text-center max-w-2xl flex flex-col items-center gap-4 mt-16 transition-all duration-500">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-rose-500/20 text-rose-400 border border-rose-500/30">Szene 1</span>
-                        <h2 class="text-xl md:text-3xl font-extrabold text-white">Das Problem: Unverschlüsselte Nachrichten</h2>
+                        <h2 class="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Ein einziger Schlüssel für Alles</h2>
                         
-                        <!-- Unencrypted Transfer Animation -->
-                        <div class="w-full relative h-20 bg-slate-950/80 border border-slate-800 rounded-xl my-2 flex items-center justify-between px-6 overflow-hidden">
-                            <div class="text-xs text-blue-400 font-bold z-10">Klartext</div>
+                        <div class="w-full flex flex-col md:flex-row items-center justify-center gap-4 my-2">
+                            <div class="bg-slate-100 border border-slate-300 p-4 rounded-xl text-center w-full md:w-44 shadow-inner">
+                                <span class="text-[10px] text-slate-500 font-mono uppercase block mb-1">Sender (Alice)</span>
+                                <span class="text-sm font-semibold text-slate-800">"Geheimnis"</span>
+                            </div>
                             
-                            <!-- Packet Flying -->
-                            <div class="absolute animate-fly-packet flex items-center gap-2 bg-slate-900 border border-rose-500/60 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-mono shadow-lg">
-                                <i class="fa-regular fa-envelope text-amber-400"></i> "Hallo Bob!"
+                            <div class="flex flex-col items-center text-indigo-600 my-1 md:my-0">
+                                <i class="fa-solid fa-key text-2xl animate-bounce"></i>
+                                <span class="text-[10px] font-mono text-indigo-700 mt-1">Gleicher Schlüssel</span>
                             </div>
 
-                            <div class="text-xs text-emerald-400 font-bold z-10">Klartext</div>
+                            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl text-center w-full md:w-44 shadow-sm">
+                                <span class="text-[10px] text-indigo-700 font-mono uppercase block mb-1">Empfänger (Bob)</span>
+                                <span class="text-sm font-semibold text-slate-800">"Geheimnis"</span>
+                            </div>
                         </div>
 
-                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                            Ohne Verschlüsselung wandern Daten als klar lesbarer Text durch das unsichere Netzwerk. <strong class="text-rose-400">Eve kann problemlos mitlesen</strong> und sensible Daten wie Passwörter stehlen.
+                        <p class="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed">
+                            Bei der symmetrischen Verschlüsselung verwenden Sender und Empfänger <strong class="text-indigo-600">exakt denselben geheimen Schlüssel</strong> sowohl zum Verschlüsseln als auch zum Entschlüsseln.
                         </p>
                     </div>
 
-                    <!-- SCENE 2: Der gemeinsame Schlüssel -->
-                    <div id="scene2" class="scene-content hidden text-center max-w-2xl flex flex-col items-center gap-4 mt-16 transition-all duration-500">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/20 text-amber-400 border border-amber-500/30">Szene 2</span>
-                        <h2 class="text-xl md:text-3xl font-extrabold text-white">Der gemeinsame geheime Schlüssel</h2>
+                    <!-- Scene 2: Schlüsselaustausch -->
+                    <div id="scene2" class="scene-content hidden text-center max-w-3xl flex flex-col items-center gap-6 transition-all duration-500">
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-indigo-100 text-indigo-700 border border-indigo-200">Lektion 2</span>
+                            <span class="text-xs text-slate-500">Das Schlüssel-Problem</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Wie kommt der Schlüssel zum Partner?</h2>
 
-                        <div class="flex items-center justify-center gap-6 my-2">
-                            <div class="bg-slate-950/90 border border-amber-500/50 p-4 rounded-xl flex items-center gap-3 shadow-xl glow-effect">
-                                <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl">
-                                    <i class="fa-solid fa-key"></i>
+                        <div class="flex items-center justify-center gap-6 w-full max-w-md my-2">
+                            <div class="flex-1 bg-amber-50 border border-amber-200 p-4 rounded-xl flex flex-col items-center gap-2 shadow-sm">
+                                <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-user-secret"></i>
                                 </div>
-                                <div class="text-left">
-                                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block">Secret Key</span>
-                                    <span class="text-xs font-mono text-slate-200">K-9823-XQ4</span>
+                                <span class="text-xs font-bold text-amber-700">Sicherer Kanal nötig</span>
+                                <span class="text-[11px] text-slate-500">Vorab-Austausch</span>
+                            </div>
+
+                            <div class="flex-1 bg-rose-50 border border-rose-200 p-4 rounded-xl flex flex-col items-center gap-2 shadow-sm">
+                                <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
                                 </div>
+                                <span class="text-xs font-bold text-rose-700">Gefahr im Netz</span>
+                                <span class="text-[11px] text-slate-500">Abfangen durch Dritte</span>
                             </div>
                         </div>
 
-                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                            Bei der symmetrischen Verschlüsselung vereinbaren Alice und Bob im Voraus vertraulich <strong class="text-amber-400">ein und denselben geheimen Schlüssel</strong>. Nur wer diesen Schlüssel besitzt, kann Nachrichten chiffrieren und dechiffrieren.
+                        <p class="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed">
+                            Die größte Herausforderung: Bevor eine Nachricht verschlüsselt werden kann, müssen Sender und Empfänger den Schlüssel <strong class="text-rose-600">über einen sicheren Weg austauschen</strong>.
                         </p>
                     </div>
 
-                    <!-- SCENE 3: Verschlüsselung bei Alice -->
-                    <div id="scene3" class="scene-content hidden text-center max-w-2xl flex flex-col items-center gap-4 mt-16 transition-all duration-500">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/30">Szene 3</span>
-                        <h2 class="text-xl md:text-3xl font-extrabold text-white">Verschlüsselung bei Alice</h2>
+                    <!-- Scene 3: Schlüsselberechnung (NEU) -->
+                    <div id="scene3" class="scene-content hidden text-center max-w-3xl flex flex-col items-center gap-6 transition-all duration-500">
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-rose-100 text-rose-700 border border-rose-200">Lektion 3</span>
+                            <span class="text-xs text-slate-500">Mathematisches Merkmal</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Anzahl der Schlüssel berechnen</h2>
 
-                        <div class="flex flex-col md:flex-row items-center justify-center gap-3 my-2 w-full max-w-md">
-                            <div class="bg-slate-950 p-3 rounded-lg border border-blue-500/40 text-xs font-mono text-slate-200">
-                                "Hallo Bob!"
+                        <div class="w-full max-w-lg bg-slate-100 border border-slate-300 p-4 rounded-xl shadow-inner my-1 flex flex-col items-center gap-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Formel für $n$ Teilnehmer</span>
+                            <div class="bg-white border border-indigo-200 px-6 py-3 rounded-xl shadow-sm text-indigo-700 font-mono font-extrabold text-xl md:text-2xl">
+                                K = n &middot; (n - 1) / 2
                             </div>
-                            <div class="text-amber-400 font-bold text-lg">+ <i class="fa-solid fa-key"></i> &rarr;</div>
-                            <div class="bg-slate-950 p-3 rounded-lg border border-amber-500/40 text-xs font-mono text-amber-400 break-all font-bold">
-                                %8x#K!m9L&amp;zP
+                            <div class="grid grid-cols-3 gap-2 w-full text-center text-xs font-mono mt-1">
+                                <div class="bg-white p-2 rounded-lg border border-slate-200">3 Personen = <strong>3</strong> Keys</div>
+                                <div class="bg-white p-2 rounded-lg border border-slate-200">5 Personen = <strong>10</strong> Keys</div>
+                                <div class="bg-white p-2 rounded-lg border border-slate-200">10 Personen = <strong>45</strong> Keys</div>
                             </div>
                         </div>
 
-                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                            Alice gibt die Nachricht und den geheimen Schlüssel in den Verschlüsselungs-Algorithmus (z. B. AES). Das Ergebnis ist ein unleserlicher <strong class="text-amber-400">Geheimtext (Ciphertext)</strong>.
+                        <p class="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed">
+                            Weil jedes Paar einen eigenen Schlüssel benötigt, wächst die Schlüsselanzahl <strong class="text-rose-600">quadratisch</strong>. Bei 100 Teilnehmern werden bereits <strong>4.950 Schlüssel</strong> benötigt!
                         </p>
                     </div>
 
-                    <!-- SCENE 4: Sichere Übertragung -->
-                    <div id="scene4" class="scene-content hidden text-center max-w-2xl flex flex-col items-center gap-4 mt-16 transition-all duration-500">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Szene 4</span>
-                        <h2 class="text-xl md:text-3xl font-extrabold text-white">Sichere Übertragung über das Netz</h2>
+                    <!-- Scene 4: Algorithmen -->
+                    <div id="scene4" class="scene-content hidden text-center max-w-3xl flex flex-col items-center gap-5 transition-all duration-500">
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-indigo-100 text-indigo-700 border border-indigo-200">Lektion 4</span>
+                            <span class="text-xs text-slate-500">Klassisch vs. Modern</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Von Caesar bis AES-256</h2>
 
-                        <div class="w-full relative h-20 bg-slate-950/80 border border-slate-800 rounded-xl my-2 flex items-center justify-between px-6 overflow-hidden">
-                            <div class="text-xs text-blue-400 font-bold z-10"><i class="fa-solid fa-lock text-amber-400"></i> Verschlüsselt</div>
-                            
-                            <!-- Encrypted Flying Packet -->
-                            <div class="absolute animate-fly-packet flex items-center gap-2 bg-slate-900 border border-amber-500/80 text-amber-400 px-3 py-1.5 rounded-lg text-xs font-mono shadow-lg">
-                                <i class="fa-solid fa-lock text-amber-400"></i> %8x#K!m9L&amp;zP
+                        <div class="w-full flex flex-col md:flex-row gap-3 max-w-lg my-1 text-left">
+                            <div class="bg-slate-100 p-3 rounded-xl border border-slate-300 flex-1">
+                                <span class="text-xs font-bold text-slate-700 block mb-1">Caesar-Chiffre</span>
+                                <span class="text-[11px] text-slate-500 block">Verschiebung im Alphabet. Einfach, aber heute völlig unsicher.</span>
                             </div>
 
-                            <div class="text-xs text-emerald-400 font-bold z-10"><i class="fa-solid fa-lock text-amber-400"></i> Verschlüsselt</div>
+                            <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-200 flex-1 shadow-sm">
+                                <span class="text-xs font-bold text-indigo-700 block mb-1">AES-256 (Advanced Encryption Standard)</span>
+                                <span class="text-[11px] text-slate-600 block">Weltweiter Standard. Höchste Sicherheit für Online-Banking &amp; WLAN.</span>
+                            </div>
                         </div>
 
-                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                            Der Geheimtext wandert durch das Internet. Eve sieht zwar das Datenpaket, kann aber <strong class="text-rose-400">nur wertloses Kauderwelsch</strong> erkennen. Ohne Schlüssel ist die Nachricht für sie unlesbar.
+                        <p class="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed">
+                            Moderne symmetrische Verfahren wie <strong class="text-indigo-600">AES-256</strong> verarbeiten Datenblöcke mit komplexen mathematischen Runden und gelten als unknackbar.
                         </p>
                     </div>
 
-                    <!-- SCENE 5: Entschlüsselung bei Bob -->
-                    <div id="scene5" class="scene-content hidden text-center max-w-2xl flex flex-col items-center gap-4 mt-16 transition-all duration-500">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Szene 5</span>
-                        <h2 class="text-xl md:text-3xl font-extrabold text-white">Entschlüsselung bei Bob</h2>
+                    <!-- Scene 5: Vor- und Nachteile -->
+                    <div id="scene5" class="scene-content hidden text-center max-w-3xl flex flex-col items-center gap-6 transition-all duration-500">
+                        <div class="flex items-center justify-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-indigo-100 text-indigo-700 border border-indigo-200">Lektion 5</span>
+                            <span class="text-xs text-slate-500">Zusammenfassung</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Vorteile vs. Nachteile</h2>
 
-                        <div class="flex flex-col md:flex-row items-center justify-center gap-3 my-2 w-full max-w-md">
-                            <div class="bg-slate-950 p-3 rounded-lg border border-amber-500/40 text-xs font-mono text-amber-400">
-                                %8x#K!m9L&amp;zP
+                        <div class="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-lg my-1">
+                            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex-1 w-full text-center">
+                                <span class="text-xs font-bold text-emerald-700 block mb-1"><i class="fa-solid fa-bolt"></i> Vorteile</span>
+                                <span class="text-[11px] text-slate-600 block">Extrem schnell &amp; effizient für große Datenmengen.</span>
                             </div>
-                            <div class="text-emerald-400 font-bold text-lg">+ <i class="fa-solid fa-key text-amber-400"></i> &rarr;</div>
-                            <div class="bg-slate-950 p-3 rounded-lg border border-emerald-500/40 text-xs font-mono text-emerald-400 font-bold">
-                                "Hallo Bob!"
+
+                            <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl flex-1 w-full text-center">
+                                <span class="text-xs font-bold text-rose-700 block mb-1"><i class="fa-solid fa-circle-exclamation"></i> Nachteile</span>
+                                <span class="text-[11px] text-slate-600 block">Schlüsselaustausch &amp; Aufwand bei vielen Teilnehmern.</span>
                             </div>
                         </div>
 
-                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                            Bob empfängt den Geheimtext. Mit exakt <strong class="text-amber-400">demselben geheimen Schlüssel</strong> kehrte er den Prozess um und stellt die ursprüngliche Klartext-Nachricht fehlerfrei wieder her.
-                        </p>
-                    </div>
-
-                    <!-- SCENE 6: Zusammenfassung / Vor- & Nachteile -->
-                    <div id="scene6" class="scene-content hidden text-center max-w-2xl flex flex-col items-center gap-4 mt-16 transition-all duration-500">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/20 text-amber-400 border border-amber-500/30">Szene 6</span>
-                        <h2 class="text-xl md:text-3xl font-extrabold text-white">Vor- und Nachteile</h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full text-left my-1">
-                            <div class="bg-slate-950/80 p-3.5 rounded-xl border border-emerald-500/30">
-                                <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mb-1">
-                                    <i class="fa-solid fa-circle-check"></i> Vorteile
-                                </span>
-                                <ul class="text-[11px] text-slate-300 space-y-1 list-disc list-inside">
-                                    <li>Extrem schnelle Berechnung (sehr effizient).</li>
-                                    <li>Optimal für große Datenmengen (z. B. AES).</li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-slate-950/80 p-3.5 rounded-xl border border-rose-500/30">
-                                <span class="text-xs font-bold text-rose-400 flex items-center gap-1.5 mb-1">
-                                    <i class="fa-solid fa-circle-xmark"></i> Schlüsselübertragungsproblem
-                                </span>
-                                <p class="text-[11px] text-slate-300">
-                                    Wie übergeben Alice &amp; Bob den Schlüssel vorab sicher, ohne dass Eve ihn abfängt?
-                                </p>
-                            </div>
-                        </div>
-
-                        <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
-                            Symmetrische Verschlüsselung ist blitzschnell, erfordert jedoch eine Lösung für den sicheren Erstausgang des Schlüssels (oft gelöst durch Asymmetrische Verfahren).
+                        <p class="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed">
+                            Wegen ihrer hohen Geschwindigkeit bildet die symmetrische Verschlüsselung das <strong class="text-indigo-600">Fundament der Datenübertragung</strong> im Internet.
                         </p>
                     </div>
 
                 </div>
 
                 <!-- Subtitles / Speaker Voice Box -->
-                <div class="bg-slate-950/90 border-t border-slate-800/80 p-4 min-h-[85px] flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center flex-shrink-0 text-lg">
+                <div class="bg-slate-50 border-t border-slate-200 p-4 min-h-[85px] flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-100 border border-indigo-200 text-indigo-600 flex items-center justify-center flex-shrink-0 text-lg">
                         <i class="fa-solid fa-volume-high"></i>
                     </div>
                     <div class="flex-grow">
-                        <span id="subtitleTitle" class="text-[10px] uppercase tracking-wider font-extrabold text-amber-400 block mb-0.5">Szene 1: Problem ohne Verschlüsselung</span>
-                        <p id="speakerText" class="text-xs md:text-sm text-slate-200 font-medium leading-snug">
-                            Willkommen! Schauen wir uns an, was passiert, wenn Alice eine vertrauliche Nachricht an Bob sendet, ohne diese zu verschlüsseln.
+                        <span id="subtitleTitle" class="text-[10px] uppercase tracking-wider font-extrabold text-indigo-700 block mb-0.5">Lektion 1</span>
+                        <p id="speakerText" class="text-xs md:text-sm text-slate-700 font-medium leading-snug">
+                            Willkommen! In diesem Video erklären wir das Grundprinzip der symmetrischen Verschlüsselung.
                         </p>
                     </div>
                 </div>
 
                 <!-- Video Control Bar -->
-                <div class="bg-slate-950 px-4 py-3 border-t border-slate-800 flex flex-col gap-2">
-                    <!-- Progress Bar Container -->
-                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden cursor-pointer" id="progressContainer" onclick="seekVideo(event)">
-                        <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-yellow-400 h-full w-0 transition-all duration-300"></div>
+                <div class="bg-slate-100 px-4 py-3 border-t border-slate-200 flex flex-col gap-2">
+                    <div class="w-full bg-slate-300 h-2 rounded-full overflow-hidden cursor-pointer" id="progressContainer" onclick="seekVideo(event)">
+                        <div id="progressBar" class="bg-gradient-to-r from-indigo-600 to-cyan-500 h-full w-0 transition-all duration-300"></div>
                     </div>
 
                     <div class="flex items-center justify-between mt-1">
                         <div class="flex items-center gap-3">
-                            <button id="btnPrev" onclick="prevScene()" class="p-2 text-slate-400 hover:text-white transition disabled:opacity-30">
+                            <button id="btnPrev" onclick="prevScene()" class="p-2 text-slate-500 hover:text-slate-900 transition disabled:opacity-30">
                                 <i class="fa-solid fa-backward-step text-base"></i>
                             </button>
-                            <button id="btnPlay" onclick="togglePlay()" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 text-slate-950 hover:opacity-90 transition flex items-center justify-center font-bold shadow-md shadow-amber-500/20">
+                            <button id="btnPlay" onclick="togglePlay()" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white hover:opacity-90 transition flex items-center justify-center font-bold shadow-md shadow-indigo-500/20">
                                 <i id="playIcon" class="fa-solid fa-play ml-0.5 text-sm"></i>
                             </button>
-                            <button id="btnNext" onclick="nextScene()" class="p-2 text-slate-400 hover:text-white transition disabled:opacity-30">
+                            <button id="btnNext" onclick="nextScene()" class="p-2 text-slate-500 hover:text-slate-900 transition disabled:opacity-30">
                                 <i class="fa-solid fa-forward-step text-base"></i>
                             </button>
-                            <span id="timeDisplay" class="text-xs text-slate-400 font-mono ml-2">00:00 / 00:42</span>
+                            <span id="timeDisplay" class="text-xs text-slate-500 font-mono ml-2">00:00 / 00:35</span>
                         </div>
 
                         <!-- Chapter Dots -->
-                        <div class="flex items-center gap-1.5" id="sceneDots">
-                            <!-- Populated dynamically -->
-                        </div>
+                        <div class="flex items-center gap-1.5" id="sceneDots"></div>
                     </div>
                 </div>
 
@@ -325,126 +276,116 @@
 
         <!-- SECTION 2: INTERACTIVE CRYPTO LAB -->
         <div id="sectionLab" class="hidden flex-col gap-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl glass-panel">
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xl glass-panel">
                 
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-6 border-b border-slate-200">
                     <div>
-                        <h2 class="text-2xl font-extrabold text-white flex items-center gap-2.5">
-                            <i class="fa-solid fa-flask text-amber-400"></i> Symmetrisches Verschlüsselungs-Lab
+                        <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                            <i class="fa-solid fa-flask text-indigo-600"></i> Verschlüsselungs-Lab
                         </h2>
-                        <p class="text-xs text-slate-400 mt-1">Testen Sie selbst: Geben Sie eine Nachricht und einen Schlüssel ein, um die Live-Symmetrie zu sehen.</p>
+                        <p class="text-xs text-slate-500 mt-1">Verschlüsseln und entschlüsseln Sie Texte live mit symmetrischen Schlüsselverfahren.</p>
                     </div>
 
-                    <!-- Presets -->
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="setLabPreset('Geheimtreff um 18 Uhr!', 'GEHEIM123')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 rounded-lg transition font-mono">Preset 1</button>
-                        <button onclick="setLabPreset('Passwort ist S3cur3P@ss', 'MEINKEY99')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 rounded-lg transition font-mono">Preset 2</button>
+                    <!-- Algorithm Selection -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-slate-500">Verfahren:</span>
+                        <select id="algoSelect" onchange="processLab()" class="bg-slate-100 border border-slate-300 text-xs font-semibold rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-indigo-500">
+                            <option value="caesar">Caesar-Chiffre (Buchstabenverschiebung)</option>
+                            <option value="xor">XOR-Verschlüsselung (Bitweise)</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- Inputs & Live Calculations -->
+                <!-- Live Inputs & Key -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
-                    <!-- Left Column: Inputs -->
-                    <div class="flex flex-col gap-4">
-                        <div>
-                            <label class="text-xs font-extrabold text-blue-400 uppercase tracking-wider block mb-1">
-                                1. Nachrichten-Eingabe (Alice)
-                            </label>
-                            <input id="labMessage" type="text" value="Hallo Bob! Das ist vertraulich." oninput="updateLab()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-100 focus:outline-none focus:border-blue-500 transition font-mono text-sm">
-                        </div>
-
-                        <div>
-                            <label class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex justify-between mb-1">
-                                <span>2. Gemeinsamer Geheimer Schlüssel (Secret Key)</span>
-                                <i class="fa-solid fa-key text-amber-400"></i>
-                            </label>
-                            <input id="labKey" type="text" value="Symmetrisch2026" oninput="updateLab()" class="w-full bg-slate-950 border border-amber-500/40 rounded-xl p-3 text-amber-400 focus:outline-none focus:border-amber-400 transition font-mono text-sm">
-                        </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-extrabold text-indigo-700 uppercase tracking-wider">
+                            Klartext / Eingabe
+                        </label>
+                        <textarea id="labInput" oninput="processLab()" rows="3" placeholder="Geben Sie Ihren Text ein..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-slate-800 focus:outline-none focus:border-indigo-500 font-mono text-sm shadow-inner">Geheimnis123</textarea>
                     </div>
 
-                    <!-- Right Column: Results & Eavesdropper Channel -->
-                    <div class="flex flex-col gap-4">
-                        <!-- What Eve Sees -->
-                        <div class="bg-slate-950 p-4 rounded-xl border border-rose-500/40">
-                            <label class="text-xs font-extrabold text-rose-400 uppercase tracking-wider flex items-center justify-between mb-1">
-                                <span>3. Was Eve im Netzwerk abfängt (Geheimtext)</span>
-                                <i class="fa-solid fa-user-ninja"></i>
-                            </label>
-                            <div id="labCiphertext" class="font-mono text-xs text-rose-400 break-all bg-slate-900 p-2.5 rounded-lg border border-slate-800 min-h-[42px] flex items-center">
-                                --
-                            </div>
-                        </div>
-
-                        <!-- What Bob Decrypts -->
-                        <div class="bg-slate-950 p-4 rounded-xl border border-emerald-500/40">
-                            <label class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider flex items-center justify-between mb-1">
-                                <span>4. Bobs Entschlüsselung (Mit identischem Schlüssel)</span>
-                                <i class="fa-solid fa-user-tie"></i>
-                            </label>
-                            <div id="labDecrypted" class="font-mono text-xs text-emerald-400 break-all bg-slate-900 p-2.5 rounded-lg border border-slate-800 min-h-[42px] flex items-center font-bold">
-                                --
-                            </div>
-                        </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-extrabold text-indigo-700 uppercase tracking-wider flex justify-between">
+                            <span>Symmetrischer Schlüssel</span>
+                            <button onclick="randomizeKey()" class="text-xs text-slate-500 hover:text-indigo-600 font-normal">Zufall</button>
+                        </label>
+                        <input id="labKey" oninput="processLab()" type="text" value="3" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-slate-800 focus:outline-none focus:border-indigo-500 font-mono text-sm shadow-inner" placeholder="Schlüssel (Zahl oder Wort)">
                     </div>
-
                 </div>
 
+                <!-- Output Display -->
+                <div class="mt-6 flex flex-col gap-2">
+                    <label class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider flex justify-between">
+                        <span>Resultierender Geheimtext (Ciphertext)</span>
+                        <button onclick="copyCipher()" class="text-xs text-slate-500 hover:text-indigo-600 transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i> Kopieren
+                        </button>
+                    </label>
+                    <div id="labOutput" class="w-full bg-emerald-50/50 border border-emerald-300 rounded-xl p-4 font-mono text-emerald-800 text-base md:text-lg break-all min-h-[60px] flex items-center shadow-inner">
+                        ---
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SECTION 3: KEY CALCULATOR (NEU) -->
+        <div id="sectionCalc" class="hidden flex-col gap-6">
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xl glass-panel flex flex-col gap-6">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                        <i class="fa-solid fa-calculator text-rose-600"></i> Schlüssel-Rechner für $n$ Teilnehmer
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Berechnen Sie die benötigte Anzahl symmetrischer Schlüssel über die Formel K = n &middot; (n - 1) / 2.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="flex flex-col gap-3 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <label class="text-xs font-bold text-slate-700 flex justify-between">
+                            <span>Teilnehmer im Netzwerk (n):</span>
+                            <span id="sliderVal" class="text-indigo-700 font-mono font-extrabold text-base">5</span>
+                        </label>
+                        <input type="range" id="participantSlider" min="2" max="100" value="5" oninput="updateKeyCalc()" class="w-full accent-indigo-600 cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                            <span>2 (Minimum)</span>
+                            <span>50</span>
+                            <span>100</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-xl text-center flex flex-col justify-center gap-1 shadow-sm">
+                        <span class="text-xs text-indigo-700 font-bold uppercase tracking-wider">Benötigte Schlüssel (K)</span>
+                        <span id="calcResult" class="text-3xl md:text-4xl font-extrabold font-mono text-indigo-800">10</span>
+                        <span class="text-[10px] text-slate-500 font-mono">Formel: (5 &times; 4) / 2</span>
+                    </div>
+
+                    <div class="bg-rose-50 border border-rose-200 p-5 rounded-xl flex flex-col gap-2 shadow-sm">
+                        <span class="text-xs font-bold text-rose-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Das Skalierungs-Problem
+                        </span>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Da jeder Nutzer mit allen anderen einen eigenen Schlüssel austauschen muss, steigen die Verbindungen <strong class="text-rose-600">quadratisch</strong> an.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-slate-950 py-4 px-6 text-center text-xs text-slate-500">
-        <p>Interaktives Kryptographie-Lernmodul &bull; Symmetrische Verschlüsselung (Alice &amp; Bob)</p>
+    <footer class="border-t border-slate-200 bg-white py-4 px-6 text-center text-xs text-slate-500">
+        <p>Interaktives Kryptographie-Lernmodul &bull; Symmetrische Verschlüsselung</p>
     </footer>
 
     <script>
-        // --- DATA & SCENE DEFINITIONS ---
         const SCENES = [
-            {
-                id: 1,
-                duration: 7,
-                title: "Szene 1: Unverschlüsselt",
-                subtitle: "Das Problem ohne Verschlüsselung",
-                text: "Wenn Alice eine Klartext-Nachricht ohne Schutz sendet, kann Eve im Netzwerk problemlos mitlesen und vertrauliche Informationen abfangen."
-            },
-            {
-                id: 2,
-                duration: 7,
-                title: "Szene 2: Der Geheime Schlüssel",
-                subtitle: "Gemeinsamer Symmetrischer Key",
-                text: "Bei der symmetrischen Verschlüsselung vereinbaren Alice und Bob im Voraus einen gemeinsamen geheimen Schlüssel (Secret Key)."
-            },
-            {
-                id: 3,
-                duration: 7,
-                title: "Szene 3: Verschlüsselung bei Alice",
-                subtitle: "Klartext -> Geheimtext",
-                text: "Alice nutzt den Klartext und den geheimen Schlüssel im Verschlüsselungs-Algorithmus. Daraus entsteht unleserlicher Geheimtext (Ciphertext)."
-            },
-            {
-                id: 4,
-                duration: 7,
-                title: "Szene 4: Sichere Übertragung",
-                subtitle: "Schutz im unsicheren Netz",
-                text: "Der Geheimtext wird übertragen. Eve sieht zwar Datenpakete fließen, erkennt darin aber nur wertloses Kauderwelsch."
-            },
-            {
-                id: 5,
-                duration: 7,
-                title: "Szene 5: Entschlüsselung bei Bob",
-                subtitle: "Geheimtext -> Klartext",
-                text: "Bob verwendet exakt denselben geheimen Schlüssel, um den Geheimtext wieder vollständig in die ursprüngliche Nachricht zu verwandeln."
-            },
-            {
-                id: 6,
-                duration: 7,
-                title: "Szene 6: Zusammenfassung",
-                subtitle: "Vor- und Nachteile",
-                text: "Symmetrische Verschlüsselung ist extrem schnell und effizient, erfordert jedoch eine sichere Methode zur ersten Schlüsselübergabe."
-            }
+            { id: 1, duration: 7, title: "Lektion 1: Grundprinzip", subtitle: "Gemeinsamer Schlüssel", text: "Bei der symmetrischen Verschlüsselung nutzen Sender und Empfänger exakt denselben Schlüssel zum Ver- und Entschlüsseln." },
+            { id: 2, duration: 7, title: "Lektion 2: Schlüsselaustausch", subtitle: "Sicherer Kanal nötig", text: "Bevor Nachrichten übertragen werden können, muss der gemeinsame Schlüssel sicher ausgetauscht werden." },
+            { id: 3, duration: 7, title: "Lektion 3: Schlüsselberechnung", subtitle: "Formel: K = n * (n - 1) / 2", text: "Für n Teilnehmer benötigt man K = n*(n-1)/2 Schlüssel. Die Anzahl der Schlüssel wächst bei vielen Nutzern extrem schnell!" },
+            { id: 4, duration: 7, title: "Lektion 4: Algorithmen", subtitle: "AES-256", text: "Moderne Standardverfahren wie AES-256 verarbeiten Datenblöcke blitzschnell und bieten maximale Sicherheit." },
+            { id: 5, duration: 7, title: "Lektion 5: Zusammenfassung", subtitle: "Vor- und Nachteile", text: "Symmetrische Verschlüsselung ist extrem schnell, benötigt aber ein gutes Verfahren zum Schlüsselaustausch." }
         ];
 
         let currentSceneIdx = 0;
@@ -452,14 +393,12 @@
         let sceneTimer = null;
         let sceneProgressInterval = null;
 
-        // DOM Elements
         const sceneElements = [
             document.getElementById('scene1'),
             document.getElementById('scene2'),
             document.getElementById('scene3'),
             document.getElementById('scene4'),
-            document.getElementById('scene5'),
-            document.getElementById('scene6')
+            document.getElementById('scene5')
         ];
 
         const speakerText = document.getElementById('speakerText');
@@ -468,32 +407,42 @@
         const progressBar = document.getElementById('progressBar');
         const timeDisplay = document.getElementById('timeDisplay');
         const sceneDots = document.getElementById('sceneDots');
-        const eveContainer = document.getElementById('eveContainer');
-        const eveLabel = document.getElementById('eveLabel');
 
         window.onload = function() {
             initDots();
             renderScene(0);
-            updateLab();
+            processLab();
+            updateKeyCalc();
         };
 
         function switchTab(tab) {
             const btnVideo = document.getElementById('btnNavVideo');
             const btnLab = document.getElementById('btnNavLab');
+            const btnCalc = document.getElementById('btnNavCalc');
+            
             const secVideo = document.getElementById('sectionVideo');
             const secLab = document.getElementById('sectionLab');
+            const secCalc = document.getElementById('sectionCalc');
+
+            secVideo.classList.add('hidden');
+            secLab.classList.add('hidden');
+            secCalc.classList.add('hidden');
+
+            btnVideo.className = "px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200 transition flex items-center gap-2";
+            btnLab.className = "px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200 transition flex items-center gap-2";
+            btnCalc.className = "px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-slate-100 border border-slate-300 text-slate-700 hover:bg-slate-200 transition flex items-center gap-2";
 
             if (tab === 'video') {
                 secVideo.classList.remove('hidden');
-                secLab.classList.add('hidden');
-                btnVideo.className = "px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 transition flex items-center gap-2 shadow-lg shadow-amber-500/20";
-                btnLab.className = "px-4 py-2 text-sm font-semibold rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 transition flex items-center gap-2";
-            } else {
+                btnVideo.className = "px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white transition flex items-center gap-2 shadow-lg shadow-indigo-500/20";
+            } else if (tab === 'lab') {
                 pauseVideo();
-                secVideo.classList.add('hidden');
                 secLab.classList.remove('hidden');
-                btnLab.className = "px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 transition flex items-center gap-2 shadow-lg shadow-amber-500/20";
-                btnVideo.className = "px-4 py-2 text-sm font-semibold rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 transition flex items-center gap-2";
+                btnLab.className = "px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white transition flex items-center gap-2 shadow-lg shadow-indigo-500/20";
+            } else if (tab === 'calc') {
+                pauseVideo();
+                secCalc.classList.remove('hidden');
+                btnCalc.className = "px-3.5 py-2 text-xs md:text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white transition flex items-center gap-2 shadow-lg shadow-indigo-500/20";
             }
         }
 
@@ -501,7 +450,7 @@
             sceneDots.innerHTML = '';
             SCENES.forEach((_, idx) => {
                 const dot = document.createElement('button');
-                dot.className = `w-2.5 h-2.5 rounded-full transition-all ${idx === 0 ? 'bg-amber-400 w-6' : 'bg-slate-700'}`;
+                dot.className = `w-2.5 h-2.5 rounded-full transition-all ${idx === 0 ? 'bg-indigo-600 w-6' : 'bg-slate-300'}`;
                 dot.onclick = () => jumpToScene(idx);
                 sceneDots.appendChild(dot);
             });
@@ -510,55 +459,29 @@
         function renderScene(idx) {
             currentSceneIdx = idx;
 
-            // Toggle Scene Elements
             sceneElements.forEach((el, index) => {
-                if (index === idx) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
+                if (index === idx) el.classList.remove('hidden');
+                else el.classList.add('hidden');
             });
 
-            // Dynamic Eve Status Indicator
-            if (idx === 0) {
-                eveContainer.className = "flex flex-col items-center gap-1.5 bg-rose-950/80 p-2.5 md:p-3 rounded-2xl border border-rose-500 shadow-lg shadow-rose-500/20 scale-105 transition-all duration-500";
-                eveLabel.innerText = "Liest mit! (Gefahr)";
-                eveLabel.className = "text-[10px] text-rose-400 font-bold";
-            } else if (idx === 3) {
-                eveContainer.className = "flex flex-col items-center gap-1.5 bg-slate-950/70 p-2.5 md:p-3 rounded-2xl border border-slate-800 transition-all duration-500 opacity-60";
-                eveLabel.innerText = "Sieht nur Kauderwelsch";
-                eveLabel.className = "text-[10px] text-slate-400";
-            } else {
-                eveContainer.className = "flex flex-col items-center gap-1.5 bg-slate-950/70 p-2.5 md:p-3 rounded-2xl border border-rose-500/30 backdrop-blur transition-all duration-500";
-                eveLabel.innerText = "Lauschangreiferin";
-                eveLabel.className = "text-[10px] text-slate-400";
-            }
-
-            // Subtitles
             subtitleTitle.innerText = `${SCENES[idx].title} – ${SCENES[idx].subtitle}`;
             speakerText.innerText = SCENES[idx].text;
 
-            // Chapter Dots
             Array.from(sceneDots.children).forEach((dot, index) => {
-                dot.className = `h-2.5 rounded-full transition-all ${index === idx ? 'bg-amber-400 w-6' : 'bg-slate-700 w-2.5'}`;
+                dot.className = `h-2.5 rounded-full transition-all ${index === idx ? 'bg-indigo-600 w-6' : 'bg-slate-300 w-2.5'}`;
             });
 
-            // Time Display
             const totalDur = SCENES.reduce((a, b) => a + b.duration, 0);
             const passedDur = SCENES.slice(0, idx).reduce((a, b) => a + b.duration, 0);
             timeDisplay.innerText = `00:${passedDur < 10 ? '0' + passedDur : passedDur} / 00:${totalDur}`;
 
-            // Buttons State
             document.getElementById('btnPrev').disabled = idx === 0;
             document.getElementById('btnNext').disabled = idx === SCENES.length - 1;
         }
 
         function togglePlay() {
-            if (isPlaying) {
-                pauseVideo();
-            } else {
-                startVideo();
-            }
+            if (isPlaying) pauseVideo();
+            else startVideo();
         }
 
         function startVideo() {
@@ -574,133 +497,137 @@
             clearInterval(sceneProgressInterval);
         }
 
+        function jumpToScene(idx) {
+            pauseVideo();
+            renderScene(idx);
+            updateProgressBar(idx, 0);
+        }
+
+        function nextScene() {
+            if (currentSceneIdx < SCENES.length - 1) jumpToScene(currentSceneIdx + 1);
+        }
+
+        function prevScene() {
+            if (currentSceneIdx > 0) jumpToScene(currentSceneIdx - 1);
+        }
+
         function runPlaybackLoop() {
             if (!isPlaying) return;
 
-            const scene = SCENES[currentSceneIdx];
             let startTime = Date.now();
-            let sceneDurationMs = scene.duration * 1000;
-
-            const startPassedDur = SCENES.slice(0, currentSceneIdx).reduce((a, b) => a + b.duration, 0);
-            const totalDur = SCENES.reduce((a, b) => a + b.duration, 0);
+            let durationMs = SCENES[currentSceneIdx].duration * 1000;
 
             clearInterval(sceneProgressInterval);
             sceneProgressInterval = setInterval(() => {
-                if (!isPlaying) return;
                 let elapsed = Date.now() - startTime;
-                let progressInScene = Math.min(elapsed / sceneDurationMs, 1);
-
-                let currentTotalSec = startPassedDur + (progressInScene * scene.duration);
-                let overallPercent = (currentTotalSec / totalDur) * 100;
-
-                progressBar.style.width = `${overallPercent}%`;
-
-                if (progressInScene >= 1) {
-                    clearInterval(sceneProgressInterval);
-                }
+                let progressPercent = Math.min((elapsed / durationMs) * 100, 100);
+                updateProgressBar(currentSceneIdx, progressPercent);
             }, 50);
 
             clearTimeout(sceneTimer);
             sceneTimer = setTimeout(() => {
                 if (currentSceneIdx < SCENES.length - 1) {
-                    currentSceneIdx++;
-                    renderScene(currentSceneIdx);
+                    renderScene(currentSceneIdx + 1);
                     runPlaybackLoop();
                 } else {
                     pauseVideo();
-                    progressBar.style.width = '100%';
+                    updateProgressBar(SCENES.length - 1, 100);
                 }
-            }, sceneDurationMs);
+            }, durationMs);
         }
 
-        function nextScene() {
-            if (currentSceneIdx < SCENES.length - 1) {
-                jumpToScene(currentSceneIdx + 1);
-            }
+        function updateProgressBar(sceneIdx, scenePercent) {
+            let totalDur = SCENES.reduce((a, b) => a + b.duration, 0);
+            let passedDur = SCENES.slice(0, sceneIdx).reduce((a, b) => a + b.duration, 0);
+            let currentSceneDur = SCENES[sceneIdx].duration;
+
+            let currentTotalSeconds = passedDur + (currentSceneDur * (scenePercent / 100));
+            let overallPercent = (currentTotalSeconds / totalDur) * 100;
+
+            progressBar.style.width = `${overallPercent}%`;
+            let currentSecFormatted = Math.floor(currentTotalSeconds);
+            timeDisplay.innerText = `00:${currentSecFormatted < 10 ? '0' + currentSecFormatted : currentSecFormatted} / 00:${totalDur}`;
         }
 
-        function prevScene() {
-            if (currentSceneIdx > 0) {
-                jumpToScene(currentSceneIdx - 1);
-            }
-        }
+        function seekVideo(event) {
+            let container = document.getElementById('progressContainer');
+            let rect = container.getBoundingClientRect();
+            let clickX = event.clientX - rect.left;
+            let ratio = clickX / rect.width;
 
-        function jumpToScene(idx) {
-            pauseVideo();
-            renderScene(idx);
+            let totalDur = SCENES.reduce((a, b) => a + b.duration, 0);
+            let targetSeconds = totalDur * ratio;
 
-            const totalDur = SCENES.reduce((a, b) => a + b.duration, 0);
-            const passedDur = SCENES.slice(0, idx).reduce((a, b) => a + b.duration, 0);
-            progressBar.style.width = `${(passedDur / totalDur) * 100}%`;
-        }
-
-        function seekVideo(e) {
-            const rect = document.getElementById('progressContainer').getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const width = rect.width;
-            const percentage = clickX / width;
-
-            const totalDur = SCENES.reduce((a, b) => a + b.duration, 0);
-            const targetSec = percentage * totalDur;
-
-            let accum = 0;
+            let accumulated = 0;
             for (let i = 0; i < SCENES.length; i++) {
-                accum += SCENES[i].duration;
-                if (targetSec <= accum) {
+                if (targetSeconds <= accumulated + SCENES[i].duration) {
                     jumpToScene(i);
+                    let localPercent = ((targetSeconds - accumulated) / SCENES[i].duration) * 100;
+                    updateProgressBar(i, localPercent);
                     break;
                 }
+                accumulated += SCENES[i].duration;
             }
         }
 
-        // --- LAB DEMO LOGIC (Vigenère / XOR Substitution algorithm for live UI demonstration) ---
-        function simpleSymmetricXOR(text, key) {
-            if (!key) return text;
-            let result = "";
-            for (let i = 0; i < text.length; i++) {
-                let textChar = text.charCodeAt(i);
-                let keyChar = key.charCodeAt(i % key.length);
-                // XOR character code
-                let xorVal = textChar ^ keyChar;
-                result += String.fromCharCode((xorVal % 94) + 33); // printable ASCII range
-            }
-            return result;
-        }
+        // --- CRYPTO LAB LOGIC ---
+        function processLab() {
+            const algo = document.getElementById('algoSelect').value;
+            const input = document.getElementById('labInput').value;
+            const keyStr = document.getElementById('labKey').value;
+            const outputEl = document.getElementById('labOutput');
 
-        function simpleSymmetricDecrypt(cipher, key) {
-            if (!key) return cipher;
-            // For symmetric demo restoration
-            let result = "";
-            for (let i = 0; i < cipher.length; i++) {
-                let cipherChar = cipher.charCodeAt(i);
-                let keyChar = key.charCodeAt(i % key.length);
-                let origVal = (cipherChar - 33) ^ keyChar;
-                result += String.fromCharCode(origVal);
-            }
-            return result;
-        }
-
-        function updateLab() {
-            const msg = document.getElementById('labMessage').value;
-            const key = document.getElementById('labKey').value;
-
-            if (!msg) {
-                document.getElementById('labCiphertext').innerText = "--";
-                document.getElementById('labDecrypted').innerText = "--";
+            if (!input) {
+                outputEl.innerText = "---";
                 return;
             }
 
-            const cipher = simpleSymmetricXOR(msg, key);
-            const decrypted = msg; // Symmetrisch stellt exakt die Ursprungsnachricht her
-
-            document.getElementById('labCiphertext').innerText = cipher;
-            document.getElementById('labDecrypted').innerText = decrypted;
+            if (algo === 'caesar') {
+                let shift = parseInt(keyStr) || 3;
+                let result = '';
+                for (let i = 0; i < input.length; i++) {
+                    let c = input.charCodeAt(i);
+                    if (c >= 65 && c <= 90) result += String.fromCharCode((c - 65 + shift) % 26 + 65);
+                    else if (c >= 97 && c <= 122) result += String.fromCharCode((c - 97 + shift) % 26 + 97);
+                    else result += input.charAt(i);
+                }
+                outputEl.innerText = result;
+            } else if (algo === 'xor') {
+                let key = keyStr || "KEY";
+                let result = '';
+                for (let i = 0; i < input.length; i++) {
+                    let charCode = input.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                    result += charCode.toString(16).padStart(2, '0') + ' ';
+                }
+                outputEl.innerText = result.trim().toUpperCase();
+            }
         }
 
-        function setLabPreset(msg, key) {
-            document.getElementById('labMessage').value = msg;
-            document.getElementById('labKey').value = key;
-            updateLab();
+        function randomizeKey() {
+            const algo = document.getElementById('algoSelect').value;
+            if (algo === 'caesar') {
+                document.getElementById('labKey').value = Math.floor(Math.random() * 25) + 1;
+            } else {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let randKey = '';
+                for (let i = 0; i < 4; i++) randKey += chars.charAt(Math.floor(Math.random() * chars.length));
+                document.getElementById('labKey').value = randKey;
+            }
+            processLab();
+        }
+
+        function copyCipher() {
+            const text = document.getElementById('labOutput').innerText;
+            navigator.clipboard.writeText(text);
+            alert("Geheimtext kopiert!");
+        }
+
+        // --- KEY CALCULATOR LOGIC ---
+        function updateKeyCalc() {
+            const n = parseInt(document.getElementById('participantSlider').value);
+            document.getElementById('sliderVal').innerText = n;
+            const k = (n * (n - 1)) / 2;
+            document.getElementById('calcResult').innerText = k.toLocaleString('de-DE');
         }
     </script>
 </body>
